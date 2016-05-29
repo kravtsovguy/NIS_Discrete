@@ -1,0 +1,6 @@
+Y:\Documents\Projects\WIN\MinPolynomial\MinPolynomial\bin\Debug\MinPolynomial.exe.config
+Y:\Documents\Projects\WIN\MinPolynomial\MinPolynomial\bin\Debug\MinPolynomial.exe
+Y:\Documents\Projects\WIN\MinPolynomial\MinPolynomial\bin\Debug\MinPolynomial.pdb
+Y:\Documents\Projects\WIN\MinPolynomial\MinPolynomial\obj\Debug\MinPolynomial.csprojResolveAssemblyReference.cache
+Y:\Documents\Projects\WIN\MinPolynomial\MinPolynomial\obj\Debug\MinPolynomial.exe
+Y:\Documents\Projects\WIN\MinPolynomial\MinPolynomial\obj\Debug\MinPolynomial.pdb
