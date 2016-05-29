@@ -13,23 +13,37 @@ namespace MinPolynomial
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+            //Простое число
             Polynomial.p = 2;
-            Polynomial.m = 4;
-            Polynomial.px = new Polynomial(1,1,0,0,1);
-            Polynomial a = new Polynomial(0, 1);
-            uint pow_b = 6;
-            Polynomial B = a.Pow(pow_b);
 
-            B = B.Prim();
+            //Максимальная степень мнохочлена
+            Polynomial.m = 4;
+
+            //Примитивный полином p(x)
+            Polynomial.px = new Polynomial(1,1,0,0,1);
+
+            //Генератор
+            Polynomial a = new Polynomial(0, 1);
+
+            //Элемент, для которого будем находить минимальный полином
+            uint pow_b = 6;
+            Polynomial B = a.Pow(pow_b).Prim();
+
+            //Находим массив степеней элемента B до того как он обратится сам в себя по формуле B^(p^r)=B
             var list = FindR(B);
+
+            //Находим коэффициенты у минимального полинома
             var koeffs = new List<Polynomial>();
             for (int i = 0; i<=list.Count; i++)
             {
                 koeffs.Add(CNK(list,i));
             }
+
+            //Создаем минимальный полином, чтобы вывести его пользователю
             koeffs.Reverse();
             var res = new Polynomial(koeffs.Select(x=>x[0]).ToArray());
 
+            //Выводим информацию пользователю
             Console.WriteLine("p={0}, m={1}, a=x, B=a^{2}",Polynomial.p,Polynomial.m,pow_b);
             Console.WriteLine("p(x)={0}",Polynomial.px);
             Console.WriteLine();
@@ -38,6 +52,11 @@ namespace MinPolynomial
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Нахождение r, то есть такое, что B^(p^r)=B
+        /// </summary>
+        /// <param name="B"></param>
+        /// <returns></returns>
         static List<Polynomial> FindR(Polynomial B)
         {
             int r = 0;
@@ -52,11 +71,17 @@ namespace MinPolynomial
             return list;
         }
 
+        /// <summary>
+        /// C(M,k) - сумма всех произведений элементов всех сочетаний из M по k элементов в каждом сочетании.
+        /// </summary>
+        /// <param name="arr">Множество</param>
+        /// <param name="k">Количество элементов</param>
+        /// <returns></returns>
         static Polynomial CNK(List<Polynomial> arr, int k)
         {
             if(k==0) return new Polynomial(1);
             hs = new HashSet<int>();
-            res = new Polynomial(0);
+            var res = new Polynomial(0);
             var l = Do(arr, new List<Polynomial>(), k);
             foreach (var item in l)
             {
@@ -66,7 +91,7 @@ namespace MinPolynomial
         }
 
         static HashSet<int> hs = new HashSet<int>();
-        static Polynomial res = new Polynomial(0);
+        static List<Polynomial> pol = new List<Polynomial>();
         static List<Polynomial> Do(List<Polynomial> source, List<Polynomial> arr, int k)
         {
             if (k <= 0)
