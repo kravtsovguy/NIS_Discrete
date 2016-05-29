@@ -9,8 +9,8 @@ namespace MinPolynomial
 {
     class Polynomial
     {
-        public static int p = 2;
-        public static int m = 4;
+        public static int p;
+        public static int m;
         public static Polynomial px;
 
         public readonly int[] koeffs;
@@ -53,7 +53,6 @@ namespace MinPolynomial
             {
                 if (i < a.N) c[i] += a[i];
                 if (i < b.N) c[i] += b[i];
-                //c[i] %= p;
             }
             return c.Trim();
         }
@@ -66,7 +65,6 @@ namespace MinPolynomial
                 for (int j = 0; j < b.N; j++)
                 {
                     c[i + j] += a[i]*b[j];
-                    //c[i + j] %= p;
                 }
             }
             return c.Trim();
@@ -137,7 +135,7 @@ namespace MinPolynomial
         {
             var a = this;
             var c = new Polynomial(a.koeffs);
-            List<Polynomial> list = new List<Polynomial>();
+            var list = new List<Polynomial>();
             list.Add(c);
             int t = 0;
             do
@@ -151,6 +149,7 @@ namespace MinPolynomial
 
         public Polynomial Pow(uint k)
         {
+            k %= (uint)Math.Pow(p, m) - 1;
             var a = this;
             var c = new Polynomial(1);
             for (int i = 0; i < k; i++)
@@ -177,7 +176,14 @@ namespace MinPolynomial
 
         public override int GetHashCode()
         {
-            return koeffs.GetHashCode();
+            int result = 0;
+            int shift = 0;
+            for (int i = 0; i < koeffs.Length; i++)
+            {
+                shift = (shift + 11) % 21;
+                result ^= (koeffs[i] + 1024) << shift;
+            }
+            return result;
         }
 
         public override string ToString()
