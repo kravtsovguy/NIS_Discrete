@@ -9,23 +9,19 @@ namespace MinPolynomial
 {
     class Program
     {
-        static Polynomial a = new Polynomial(0, 1);
-
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             Polynomial.p = 2;
             Polynomial.m = 4;
             Polynomial.px = new Polynomial(1,1,0,0,1);
-            Polynomial B = a.Pow(6);
+            Polynomial a = new Polynomial(0, 1);
+            uint pow_b = 6;
+            Polynomial B = a.Pow(pow_b);
+
             B = B.Prim();
             var list = FindR(B);
-            /*Polynomial res = new Polynomial(1);
-            foreach (var pol in list)
-            {
-                res *= (new Polynomial(0, 1) - pol);
-                //res = res.Prim();
-            }*/
             var koeffs = new List<Polynomial>();
             for (int i = 0; i<=list.Count; i++)
             {
@@ -33,7 +29,11 @@ namespace MinPolynomial
             }
             koeffs.Reverse();
             var res = new Polynomial(koeffs.Select(x=>x[0]).ToArray());
-            Console.WriteLine("Минимальный полином для элемента В="+B);
+
+            Console.WriteLine("p={0}, m={1}, a=x, B=a^{2}",Polynomial.p,Polynomial.m,pow_b);
+            Console.WriteLine("p(x)={0}",Polynomial.px);
+            Console.WriteLine();
+            Console.WriteLine("Минимальный полином для элемента В={0}:",B);
             Console.WriteLine(res);
             Console.ReadLine();
         }
@@ -49,7 +49,6 @@ namespace MinPolynomial
                 r++;
                 c = B.Pow((uint)Math.Pow(Polynomial.p, r)).Prim();
             } while (!c.Equals(B));
-            //list[2] = new Polynomial(1, 1, 0, 1);
             return list;
         }
 

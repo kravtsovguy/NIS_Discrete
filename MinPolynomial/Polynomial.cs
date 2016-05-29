@@ -74,11 +74,6 @@ namespace MinPolynomial
         {
             var a = this;
             var c = new Polynomial(a.koeffs);
-            /*for (int i = m+1; i < c.N; i++)
-            {
-                    c[i%(m+1)] += c[i];
-                    c[i] = 0;
-            }*/
             int t = 0;
             for (int i = 0; i < c.N; i++)
             {
@@ -88,7 +83,6 @@ namespace MinPolynomial
                 else t = 0;
             }
             c = new Polynomial(c.koeffs.Take(c.N - t).ToArray());
-            //c %= px;
             return c;
         }
 
@@ -112,12 +106,6 @@ namespace MinPolynomial
             var c = Polynomial.Create(a.Last/b.Last, t);
             var g = a - b*c;
             return c + g/b;
-            /*var c = b.Obr();
-            var cc = new Polynomial(0,1).Pow(6);
-            var g = c*cc;
-            var gg = b*g;
-            var r = cc - gg;
-            return c;*/
         }
 
         public static Polynomial operator %(Polynomial a, Polynomial b)
@@ -191,7 +179,6 @@ namespace MinPolynomial
             string s = "";
             for (int i = 0; i < N; i++)
             {
-                //if(this[i]==0) continue;
                 var a = i == 0 ? this[i].ToString() : $"{this[i].ToString()}x^{i}+";
                 s = a + s;
             }
