@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,42 +10,77 @@ namespace MinPolynomial
 {
     class Program
     {
+        static uint deg_b = 1;
+        static void ReadData()
+        {
+            var s = File.ReadAllLines("data.txt");
+            for (int i = 0; i < s.Length; i++)
+            {
+                var t = s[i].Split('=');
+                if (t[0] == "p")
+                {
+                    Polynomial.p = int.Parse(t[1]);
+                }
+                if (t[0] == "n")
+                {
+
+                }
+                if (t[0] == "m")
+                {
+                    Polynomial.m = int.Parse(t[1]);
+                }
+                if (t[0] == "px")
+                {
+                    Polynomial.px = new Polynomial(t[1].Split(' ').Reverse().Select(x=>int.Parse(x)).ToArray());
+                }
+                if (t[0] == "deg")
+                {
+                    deg_b = uint.Parse(t[1]);
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+            //Считывание данных
+            ReadData();
 
             //Простое число
-            Polynomial.p = 2;
+            //Polynomial.p = 2;
 
             //Максимальная степень мнохочлена
-            Polynomial.m = 4;
+            //Polynomial.m = 4;
 
             //Примитивный полином p(x)
-            Polynomial.px = new Polynomial(1,1,0,0,1);
+            //Polynomial.px = new Polynomial(1,1,0,0,1);
 
             //Генератор
             Polynomial a = new Polynomial(0, 1);
 
-            //Элемент, для которого будем находить минимальный полином
-            uint pow_b = 6;
-            Polynomial B = a.Pow(pow_b).Prim();
+            //Элемент Бета, для которого будем находить минимальный полином
+            
+            Polynomial B = a.Pow(deg_b).Prim();
 
-            //Находим массив степеней элемента B до того как он обратится сам в себя по формуле B^(p^r)=B
+            //Массив степеней элемента B до равенства B^(p^r)=B (вычисление r)
             var list = FindR(B);
 
-            //Находим коэффициенты у минимального полинома
+            //Коэффициенты у минимального полинома
             var koeffs = new List<Polynomial>();
             for (int i = 0; i<=list.Count; i++)
             {
                 koeffs.Add(CNK(list,i));
             }
 
-            //Создаем минимальный полином, чтобы вывести его пользователю
+            //Минимальный полином
             koeffs.Reverse();
             var res = new Polynomial(koeffs.Select(x=>x[0]).ToArray());
 
-            //Выводим информацию пользователю
-            Console.WriteLine("p={0}, m={1}, a=x, B=a^{2}",Polynomial.p,Polynomial.m,pow_b);
+            //Вывод минимального полинома
+            Console.WriteLine("p={0}, m={1}, a=x, B=a^{2}",Polynomial.p,Polynomial.m,deg_b);
             Console.WriteLine("p(x)={0}",Polynomial.px);
             Console.WriteLine();
             Console.WriteLine("Минимальный полином для элемента В={0}:",B);

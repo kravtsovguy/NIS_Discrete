@@ -25,7 +25,7 @@ namespace MinPolynomial
         /// <summary>
         /// Количество коэффициентов
         /// </summary>
-        public int N => koeffs.Length;
+        public int N {get{return koeffs.Length;}}
 
         /// <summary>
         /// Доступ к определенному коэффициенту
@@ -48,7 +48,7 @@ namespace MinPolynomial
         /// <summary>
         /// Старший коэфф.
         /// </summary>
-        public int Last => koeffs.Last();
+        public int Last { get { return koeffs.Last(); } }
 
         public Polynomial(params int[] koeffs)
         {
@@ -124,6 +124,7 @@ namespace MinPolynomial
                 if (c[i] == 0) t++;
                 else t = 0;
             }
+            if (c.N == t) t = c.N - 1;
             c = new Polynomial(c.koeffs.Take(c.N - t).ToArray());
             return c;
         }
@@ -268,7 +269,7 @@ namespace MinPolynomial
             string s = "";
             for (int i = 0; i < N; i++)
             {
-                var a = i == 0 ? this[i].ToString() : $"{this[i].ToString()}x^{i}+";
+                var a = i == 0 ? this[i].ToString() : string.Format("{0}x^{1}+",this[i].ToString(),i);//$"{this[i].ToString()}x^{i}+";
                 s = a + s;
             }
             return s;
